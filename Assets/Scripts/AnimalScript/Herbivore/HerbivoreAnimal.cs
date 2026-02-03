@@ -1,9 +1,12 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class HerbivoreAnimal : Animal
 {
-    // For now empty class
+    public BaseHerbivoreFood TargetFood;
+    public List<BaseHerbivoreFood> NearFood;
     void Start()
     {
         
@@ -14,4 +17,15 @@ public class HerbivoreAnimal : Animal
         
     }
     
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.TryGetComponent<BaseHerbivoreFood>(out var food))
+        {
+            if (NearFood.Count >= 3)
+            {
+                NearFood.RemoveAt(0); 
+            }
+            NearFood.Add(food);
+        }
+    }
 }

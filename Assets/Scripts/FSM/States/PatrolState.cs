@@ -3,16 +3,16 @@ using R3;
 using UnityEditor;
 using UnityEngine.SceneManagement;
 
-public class PatrolState : BaseState
+public class PatrolState : HerbivoreBaseState
 {
     
     private Vector2 targetPosition;
     private Vector2 alfaPosition;
     
     
-    public PatrolState(FSM fsm, Animal animal, Vector3 alfaPoint) : base(fsm, animal)
+    public PatrolState(HerbivoreFSM fsm, HerbivoreAnimal animal, Vector3 targetPoint) : base(fsm, animal)
     {
-        alfaPosition = alfaPoint;
+        alfaPosition = targetPoint;
     }
     
     public override void Enter()
@@ -34,6 +34,7 @@ public class PatrolState : BaseState
             .Subscribe(_ => MoveToPoint(),
                 onCompleted: _ =>
                 {
+                    animal.ReduceHunger();
                     fsm.ChangeState(new DecisionState(fsm, animal));
                 })
             .AddTo(disposable);
@@ -45,10 +46,9 @@ public class PatrolState : BaseState
         DisposeOnExit();
     }
 
-    private void MoveToPoint()
+    private void MoveToPoint() // MoveToPoint - двигаться к точке
     {
         Vector2 direction = (targetPosition - (Vector2)animal.transform.position).normalized;
         animal.transform.Translate(direction * animal.Speed * Time.deltaTime);
-        Debug.Log("Moving");
     }
 }

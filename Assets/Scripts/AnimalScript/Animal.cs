@@ -7,9 +7,8 @@ public abstract class Animal : MonoBehaviour
 {
     //Animal Stats
     public float Speed;
-    public float AlertRange; //Maybe need to rename(Range of seeing other animal)
+    public float SeekRange;
     public float HungerRate;
-    public float Health;
     
     public float Age;
     public float Hunger;
@@ -19,4 +18,10 @@ public abstract class Animal : MonoBehaviour
 
     public bool IsAlfa;
     public Transform AlfaPosition;
+    
+    
+    public void ReduceHunger()
+    {
+           Hunger -= HungerRate;
+    }
 }

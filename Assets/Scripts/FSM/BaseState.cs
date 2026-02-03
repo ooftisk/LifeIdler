@@ -1,13 +1,13 @@
 using R3;
 using UnityEngine;
 
-public abstract class BaseState
+public abstract class HerbivoreBaseState
 {
-    protected FSM fsm;
-    protected Animal animal;
+    protected HerbivoreFSM fsm;
+    protected HerbivoreAnimal animal;
     protected CompositeDisposable disposable;
 
-    public BaseState(FSM fsm, Animal animal)
+    public HerbivoreBaseState(HerbivoreFSM fsm, HerbivoreAnimal animal)
     {
         this.fsm = fsm;
         this.animal = animal;
