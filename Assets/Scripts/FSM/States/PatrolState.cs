@@ -46,7 +46,7 @@ public class PatrolState : HerbivoreBaseState
         DisposeOnExit();
     }
 
-    private void MoveToPoint() // MoveToPoint - двигаться к точке
+    private void MoveToPoint()
     {
         Vector2 direction = (targetPosition - (Vector2)animal.transform.position).normalized;
         animal.transform.Translate(direction * animal.Speed * Time.deltaTime);

@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 
 public class HerbivoreAnimal : Animal
 {
-    public BaseHerbivoreFood TargetFood;
-    public List<BaseHerbivoreFood> NearFood;
+    public BaseFood TargetFood;
+    public List<BaseFood> NearFood;
     void Start()
     {
         
@@ -19,13 +19,16 @@ public class HerbivoreAnimal : Animal
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<BaseHerbivoreFood>(out var food))
+        if (other.TryGetComponent<BaseFood>(out var food))
         {
-            if (NearFood.Count >= 3)
+            if (food.GetFoodType() == BaseFood.FoodType.Herbivore)
             {
-                NearFood.RemoveAt(0); 
+                if (NearFood.Count >= 3)
+                {
+                    NearFood.RemoveAt(0); 
+                }
+                NearFood.Add(food);
             }
-            NearFood.Add(food);
         }
     }
 }

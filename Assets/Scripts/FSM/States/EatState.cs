@@ -16,8 +16,8 @@ public class EatState : HerbivoreBaseState
         eatState.Take(1)
             .Subscribe(_ =>
             {
-                animal.TargetFood.FoodAmount -= 1;
-                animal.TargetFood.EatEffect.Play();
+                animal.TargetFood.DecreaseFoodAmount(1f);
+                animal.TargetFood.PlayEatEffect();
                 animal.Hunger += 60;
                 animal.TargetFood = null;
                 fsm.ChangeState(new DecisionState(fsm, animal));

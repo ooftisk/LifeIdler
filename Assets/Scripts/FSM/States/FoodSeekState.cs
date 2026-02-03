@@ -21,11 +21,8 @@ public class FoodSeekState : HerbivoreBaseState
             .Subscribe(_ =>
             {
                 FindNearest();
-                
-                if (animal.TargetFood != null)
-                {
-                    fsm.ChangeState(new DecisionState(fsm, animal));
-                }
+                fsm.ChangeState(new DecisionState(fsm, animal)); 
+                //трабла лежит тут, если нет еды рядом/или на еде нулевые показатели, объект начинает бесконечно крутить FoodSeekState - DecisionState
             }).AddTo(disposable);
         
     }
@@ -43,7 +40,7 @@ public class FoodSeekState : HerbivoreBaseState
         {
             float distance = Vector2.Distance(animal.transform.position, food.transform.position);
 
-            if (distance < animal.SeekRange && food.FoodAmount > 0)
+            if (distance < animal.SeekRange && food.GetFoodAmount() > 0)
             {
                 animal.TargetFood = food;
             }
