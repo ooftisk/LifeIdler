@@ -13,35 +13,24 @@ public class DecisionState : HerbivoreBaseState
     {
         DisposeOnEnter();
         
-        Observable.EveryValueChanged(this, _ => animal.Hunger)
+         Observable.EveryValueChanged(this, _ => animal.Hunger)
             .Where(hunger => hunger <= 40f)
             .Subscribe(_ =>
             {
                 Observable.NextFrame()
                     .Subscribe(_ =>
                     {
-                        TryFindFood();
+                        fsm.ChangeState(new FoodSeekState(fsm, animal));
                     }).AddTo(disposable);
-               
             }).AddTo(disposable);
+            
+        
         
         var patrolState = Observable.NextFrame();
         patrolState.Take(1)
             .Subscribe(_ =>
             {
-                if (animal.IsAlfa)
-                {
-                    fsm.ChangeState(new PatrolState(fsm, animal, Vector2.zero));
-                }
-                
-                if (animal.AlfaPosition != null && Vector2.Distance(animal.transform.position, animal.AlfaPosition.position) > 3f)
-                {
-                    fsm.ChangeState(new PatrolState(fsm, animal, animal.AlfaPosition.position));
-                }
-                else
-                {
-                    fsm.ChangeState(new PatrolState(fsm, animal, Vector2.zero));
-                }
+                fsm.ChangeState(new PatrolState(fsm, animal));
             }).AddTo(disposable);
     }
     
@@ -49,23 +38,5 @@ public class DecisionState : HerbivoreBaseState
     {
         DisposeOnExit();
     }
-
-    private void TryFindFood()
-    {
-        if (animal.TargetFood == null)
-        {
-            fsm.ChangeState(new FoodSeekState(fsm, animal));
-        }
-        else
-        {
-            if (Vector2.Distance(animal.transform.position, animal.TargetFood.transform.position) <= 0.6f)
-            {
-                fsm.ChangeState(new EatState(fsm, animal));
-            }
-            else
-            {
-                fsm.ChangeState(new PatrolState(fsm, animal, (Vector2)animal.TargetFood.transform.position + Random.insideUnitCircle * 0.5f));
-            }
-        }
-    }
+    
 }

@@ -7,29 +7,17 @@ public class PatrolState : HerbivoreBaseState
 {
     
     private Vector2 targetPosition;
-    private Vector2 alfaPosition;
     
-    
-    public PatrolState(HerbivoreFSM fsm, HerbivoreAnimal animal, Vector3 targetPoint) : base(fsm, animal)
+    public PatrolState(HerbivoreFSM fsm, HerbivoreAnimal animal) : base(fsm, animal)
     {
-        alfaPosition = targetPoint;
+        
     }
     
     public override void Enter()
     {
         DisposeOnEnter();
-
-        if (alfaPosition != Vector2.zero)
-        {
-            targetPosition = alfaPosition + Random.insideUnitCircle;
-        }
-        else
-        {
-            targetPosition = (Vector2)animal.transform.position + Random.insideUnitCircle;
-        }
-        
+        GetPositionToMove();
         var moveToPoint = Observable.EveryUpdate();
-
         moveToPoint.TakeWhile(_ => Vector2.Distance(animal.transform.position, targetPosition) > 0.1f)
             .Subscribe(_ => MoveToPoint(),
                 onCompleted: _ =>
@@ -45,10 +33,39 @@ public class PatrolState : HerbivoreBaseState
     {
         DisposeOnExit();
     }
+    
+    private void GetPositionToMove()
+    {
+        Vector2 randomPoint = Random.insideUnitCircle;
+        Vector2 animalPosition = animal.transform.position;
+        
+        if (animal.AnimalType == Animal.AnimalType.Alfa)
+        {
+            targetPosition = animalPosition + randomPoint;
+        }
 
+        if (animal.AnimalType == Animal.AnimalType.Normal)
+        {
+            if (animal.AlfaPosition != null && Vector2.Distance(animal.transform.position, animal.AlfaPosition.position) > 3f) //How far away alfa
+            {
+                targetPosition = (Vector2)animal.AlfaPosition.transform.position + randomPoint;
+            }
+            else
+            {
+                targetPosition = animalPosition + randomPoint;
+            }
+        }
+
+        if (animal.AnimalType == Animal.AnimalType.Baby)
+        {
+            // Waiting for baby implement
+        }
+    }
+    
     private void MoveToPoint()
     {
         Vector2 direction = (targetPosition - (Vector2)animal.transform.position).normalized;
         animal.transform.Translate(direction * animal.Speed * Time.deltaTime);
     }
+
 }

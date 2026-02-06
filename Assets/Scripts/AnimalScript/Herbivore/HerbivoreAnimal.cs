@@ -7,16 +7,8 @@ public class HerbivoreAnimal : Animal
 {
     public BaseFood TargetFood;
     public List<BaseFood> NearFood;
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-    
+    public AnimalType AnimalType;
+   
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent<BaseFood>(out var food))

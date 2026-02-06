@@ -5,6 +5,13 @@ using UnityEngine;
 
 public abstract class Animal : MonoBehaviour
 {
+    public enum AnimalType
+        {
+            Alfa,
+            Normal,
+			Baby
+        }
+    
     //Animal Stats
     public float Speed;
     public float SeekRange;
@@ -15,8 +22,7 @@ public abstract class Animal : MonoBehaviour
     public float Stamina;
     public float ReproductionRate;
     public float SleepRate;
-
-    public bool IsAlfa;
+    
     public Transform AlfaPosition;
     
     

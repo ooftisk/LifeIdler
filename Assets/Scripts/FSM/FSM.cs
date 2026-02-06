@@ -8,7 +8,7 @@ public class HerbivoreFSM : MonoBehaviour
     private void Start()
     {
         _animal = GetComponent<HerbivoreAnimal>();
-        ChangeState(new PatrolState(this, _animal, Vector3.zero));
+        ChangeState(new DecisionState(this, _animal));
     }
 
     public void ChangeState(HerbivoreBaseState newState)

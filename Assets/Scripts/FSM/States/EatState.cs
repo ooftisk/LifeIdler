@@ -16,17 +16,23 @@ public class EatState : HerbivoreBaseState
         eatState.Take(1)
             .Subscribe(_ =>
             {
-                animal.TargetFood.DecreaseFoodAmount(1f);
-                animal.TargetFood.PlayEatEffect();
-                animal.Hunger += 60;
-                animal.TargetFood = null;
-                fsm.ChangeState(new DecisionState(fsm, animal));
+                if (animal.TargetFood != null)
+                {
+                    animal.TargetFood.DecreaseFoodAmount(1f);
+                    animal.TargetFood.PlayEatEffect();
+                    animal.Hunger += 60;
+                    animal.TargetFood = null;
+                    fsm.ChangeState(new DecisionState(fsm, animal));
+                }
+                else
+                {
+                    Debug.Log("Bug in EatState");
+                }
             }).AddTo(disposable);
     }
 
     public override void Exit()
     {
         DisposeOnExit();
-        
     }
 }

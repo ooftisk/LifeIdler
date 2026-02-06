@@ -15,16 +15,21 @@ public class FoodSeekState : HerbivoreBaseState
     public override void Enter()
     {
         DisposeOnEnter();
-
-        var moveToFood = Observable.NextFrame();
-        moveToFood.Take(1)
-            .Subscribe(_ =>
-            {
-                FindNearest();
-                fsm.ChangeState(new DecisionState(fsm, animal)); 
-                //трабла лежит тут, если нет еды рядом/или на еде нулевые показатели, объект начинает бесконечно крутить FoodSeekState - DecisionState
-            }).AddTo(disposable);
+        FindNearest();
         
+        if (animal.TargetFood == null)
+        {
+            fsm.ChangeState(new PatrolState(fsm, animal));
+            return;
+        }
+        
+        var moveToFood = Observable.EveryUpdate();
+            moveToFood.TakeWhile(_ => animal.TargetFood != null && Vector2.Distance(animal.transform.position, animal.TargetFood.transform.position) > 0.2f)
+            .Subscribe(_ => MoveToFood(), 
+                onCompleted: _ =>
+                {
+                    fsm.ChangeState(new EatState(fsm, animal));
+                }).AddTo(disposable);
     }
 
     public override void Exit()
@@ -32,7 +37,7 @@ public class FoodSeekState : HerbivoreBaseState
        DisposeOnExit(); 
     }
 
-    private void FindNearest()
+    private void FindNearest() //Поиск ближайшей точки с едой
     {
         animal.TargetFood = null;
         
@@ -45,6 +50,11 @@ public class FoodSeekState : HerbivoreBaseState
                 animal.TargetFood = food;
             }
         }
-        
+    }
+
+    private void MoveToFood()
+    {
+        Vector2 direction = (animal.TargetFood.transform.position - animal.transform.position).normalized;
+        animal.transform.Translate(direction * animal.Speed * Time.deltaTime);
     }
 }
