@@ -45,7 +45,7 @@ public class FoodSeekState : HerbivoreBaseState
         {
             float distance = Vector2.Distance(animal.transform.position, food.transform.position);
 
-            if (distance < animal.SeekRange && food.GetFoodAmount() > 0)
+            if (distance < animal.SeekRange && food.GetFoodAmount() > 0 && food.GetFoodType() == BaseFood.FoodType.Herbivore)
             {
                 animal.TargetFood = food;
             }
