@@ -3,12 +3,12 @@ using R3;
 using UnityEditor;
 using UnityEngine.SceneManagement;
 
-public class PatrolState : HerbivoreBaseState
+public class PatrolState : BaseState
 {
     
     private Vector2 targetPosition;
     
-    public PatrolState(HerbivoreFSM fsm, HerbivoreAnimal animal) : base(fsm, animal)
+    public PatrolState(FSM fsm, Animal animal) : base(fsm, animal)
     {
         
     }
@@ -39,12 +39,12 @@ public class PatrolState : HerbivoreBaseState
         Vector2 randomPoint = Random.insideUnitCircle;
         Vector2 animalPosition = animal.transform.position;
         
-        if (animal.AnimalType == Animal.AnimalType.Alfa)
+        if (animal.AnimalType == Animal.EAnimalType.Alfa)
         {
             targetPosition = animalPosition + randomPoint;
         }
 
-        if (animal.AnimalType == Animal.AnimalType.Normal)
+        if (animal.AnimalType == Animal.EAnimalType.Normal)
         {
             if (animal.AlfaPosition != null && Vector2.Distance(animal.transform.position, animal.AlfaPosition.position) > 3f) //How far away alfa
             {
@@ -56,7 +56,7 @@ public class PatrolState : HerbivoreBaseState
             }
         }
 
-        if (animal.AnimalType == Animal.AnimalType.Baby)
+        if (animal.AnimalType == Animal.EAnimalType.Baby)
         {
             // Waiting for baby implement
         }

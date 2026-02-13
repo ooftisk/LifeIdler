@@ -5,10 +5,7 @@ using UnityEngine.InputSystem;
 
 public class HerbivoreAnimal : Animal
 {
-    public BaseFood TargetFood;
-    public List<BaseFood> NearFood;
-    public AnimalType AnimalType;
-   
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent<BaseFood>(out var food))
@@ -17,9 +14,9 @@ public class HerbivoreAnimal : Animal
             {
                 if (NearFood.Count >= 3)
                 {
-                    NearFood.RemoveAt(0); 
+                    NearFood.Dequeue(); 
                 }
-                NearFood.Add(food);
+                NearFood.Enqueue(food);
             }
         }
     }

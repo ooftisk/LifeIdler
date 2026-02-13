@@ -1,9 +1,9 @@
 using UnityEngine;
 using R3;
 
-public class EatState : HerbivoreBaseState
+public class EatState : BaseState
 {
-    public EatState(HerbivoreFSM fsm, HerbivoreAnimal animal) : base(fsm, animal)
+    public EatState(FSM fsm, Animal animal) : base(fsm, animal)
     {
         
     }
@@ -18,10 +18,16 @@ public class EatState : HerbivoreBaseState
             {
                 if (animal.TargetFood != null)
                 {
-                    animal.TargetFood.DecreaseFoodAmount(1f);
+                    animal.TargetFood.DecreaseFoodAmount(animal.FoodPerBite * 0.5f);
                     animal.TargetFood.PlayEatEffect();
-                    animal.Hunger += 60;
+                    animal.Hunger += animal.FoodPerBite;
                     animal.TargetFood = null;
+                    
+                    if (animal.Hunger > 100)
+                    {
+                        animal.Hunger = 100;
+                    }
+                    
                     fsm.ChangeState(new DecisionState(fsm, animal));
                 }
                 else

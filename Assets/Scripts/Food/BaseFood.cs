@@ -18,7 +18,7 @@ public class BaseFood : MonoBehaviour
     [SerializeField] private float TimeToRegenFood;
     [SerializeField] private float FoodRegen;
 
-    private void Start()
+    private void Start() // Food regen only for herbivore
     {
         Observable.Interval(TimeSpan.FromSeconds(TimeToRegenFood))
             .Where(_ => FoodAmount < MaxFood)
@@ -30,8 +30,6 @@ public class BaseFood : MonoBehaviour
                 {
                     FoodAmount = MaxFood;
                 }
-                
-                //пися в попе
             }).AddTo(this);
     }
     public void PlayEatEffect()

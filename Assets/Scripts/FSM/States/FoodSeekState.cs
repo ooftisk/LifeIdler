@@ -4,10 +4,10 @@ using R3.Triggers;
 using UnityEngine;
 
 
-public class FoodSeekState : HerbivoreBaseState
+public class FoodSeekState : BaseState
 {
     
-    public FoodSeekState(HerbivoreFSM fsm, HerbivoreAnimal animal) : base(fsm, animal)
+    public FoodSeekState(FSM fsm, Animal animal) : base(fsm, animal)
     {
         
     }
@@ -52,7 +52,7 @@ public class FoodSeekState : HerbivoreBaseState
         }
     }
 
-    private void MoveToFood()
+    private void MoveToFood() // Идти до точки с едой
     {
         Vector2 direction = (animal.TargetFood.transform.position - animal.transform.position).normalized;
         animal.transform.Translate(direction * animal.Speed * Time.deltaTime);

@@ -2,9 +2,9 @@ using R3;
 using R3.Triggers;
 using UnityEngine;
 
-public class DecisionState : HerbivoreBaseState
+public class DecisionState : BaseState
 {
-    public DecisionState(HerbivoreFSM fsm, HerbivoreAnimal animal) : base(fsm, animal)
+    public DecisionState(FSM fsm, Animal animal) : base(fsm, animal)
     {
         
     }

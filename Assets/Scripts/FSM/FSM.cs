@@ -1,17 +1,17 @@
 using UnityEngine;
 
-public class HerbivoreFSM : MonoBehaviour
+public class FSM : MonoBehaviour
 {
-    public HerbivoreBaseState currentState;
-    private HerbivoreAnimal _animal;
+    public BaseState currentState;
+    private Animal _animal;
 
     private void Start()
     {
-        _animal = GetComponent<HerbivoreAnimal>();
+        _animal = GetComponent<Animal>();
         ChangeState(new DecisionState(this, _animal));
     }
 
-    public void ChangeState(HerbivoreBaseState newState)
+    public void ChangeState(BaseState newState)
     {
         if (currentState != null)
         {
